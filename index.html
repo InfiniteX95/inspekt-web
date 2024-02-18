@@ -4,15 +4,47 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="style.css">
     <title>TEST</title>
+    <script src="/node_modules/@ffmpeg/ffmpeg/dist/umd/ffmpeg.js"></script>
+    <script src="/node_modules/@ffmpeg/util/dist/umd/index.js"></script>
   </head>
   <body>
-    <header>
-    </header>
-    <main>
-      <input type="file" id="uploader"/>
-      <script>
+    <h3>Upload an audio file to view the spectrogram</h3>
+    <img id="output-image"/><br/>
+    <input type="file" id="uploader">
+    <p id="message"></p>
+    <script>
+      const { fetchFile } = FFmpegUtil;
+      const { FFmpeg } = FFmpegWASM;
+      let ffmpeg = null;
 
-      </script>
-    </main>
+      const transcode = async ({ target: { files } }) => {
+        const message = document.getElementById('message');
+        if (ffmpeg === null) {
+          ffmpeg = new FFmpeg();
+          ffmpeg.on("log", ({ message }) => {
+            console.log(message);
+          })
+          ffmpeg.on("progress", ({ progress, time }) => {
+            message.innerHTML = `${progress * 100} %, time: ${time / 1000000} s`;
+          });
+          await ffmpeg.load({
+            coreURL: "/node_modules/@ffmpeg/core/dist/umd/ffmpeg-core.js",
+          });
+        }
+        const { name } = files[0];
+        await ffmpeg.writeFile(name, await fetchFile(files[0]));
+        message.innerHTML = 'Processing : start';
+        console.time('exec');
+        await ffmpeg.exec(['-i', name, "-lavfi", "showspectrumpic=s=640x480", 'spectrogram.png']);
+        console.timeEnd('exec');
+        message.innerHTML = 'Processing : complete !';
+        const data = await ffmpeg.readFile('spectrogram.png');
+
+        const image = document.getElementById('output-image');
+        image.src = URL.createObjectURL(new Blob([data.buffer], { type: 'image/png' }));
+      }
+      const elm = document.getElementById('uploader');
+      elm.addEventListener('change', transcode);
+    </script>
   </body>
 </html>
