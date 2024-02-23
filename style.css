@@ -28,7 +28,7 @@ header{
   padding: 24px;
 }
 
-#home a, a:link, a:visited, a:hover, a:active{
+#home a, #home a:link, #home a:visited, #home a:hover, #home a:active{
   padding: 0;
   color: var(--md-sys-color-primary);
   text-decoration: none;
@@ -39,6 +39,10 @@ header{
 .content{
   padding: 16px;
   display: grid;
-  grid-template-columns: 30fr 70fr;
+  grid-template-columns: 25fr 75fr;
   grid-gap: 12px;
+}
+
+md-circular-progress-color {
+  --md-circular-progress-color: var(--md-sys-color-secondary-container);
 }
