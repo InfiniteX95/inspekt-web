@@ -14,20 +14,30 @@
     </header>
     <div class="content">
       <div class="card">
-        <h3>File :</h3>
+        <p>Upload an audio file to view information :</p>
         <md-filled-tonal-button id="upload-button" onclick="importData()">
           <svg slot="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M3 21q-.825 0-1.412-.587T1 19V6h2v13h17v2zm4-4q-.825 0-1.412-.587T5 15V4q0-.825.588-1.412T7 2h5l2 2h7q.825 0 1.413.588T23 6v9q0 .825-.587 1.413T21 17z"></path></svg> Browser
         </md-filled-tonal-button>
-        <p>Filename : <a id="filename"></a></p>
-        <img id="album-art" style="height: 100px;"/>
       </div>
-      <div class="card">
-        <h3>Spectrogram :</h3>
-        <md-linear-progress id="progress" value="0" style="visibility: hidden;"></md-linear-progress>
-        <md-filled-tonal-button id="download_btn" style="visibility: hidden;" onclick="downloadSpec()">
-          <svg slot="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 15.575q-.2 0-.375-.062T11.3 15.3l-3.6-3.6q-.3-.3-.288-.7t.288-.7q.3-.3.713-.312t.712.287L11 12.15V5q0-.425.288-.712T12 4q.425 0 .713.288T13 5v7.15l1.875-1.875q.3-.3.713-.288t.712.313q.275.3.288.7t-.288.7l-3.6 3.6q-.15.15-.325.213t-.375.062M6 20q-.825 0-1.412-.587T4 18v-2q0-.425.288-.712T5 15q.425 0 .713.288T6 16v2h12v-2q0-.425.288-.712T19 15q.425 0 .713.288T20 16v2q0 .825-.587 1.413T18 20z"></path></svg> Download
-        </md-filled-tonal-button>
-        <img id="output-image" style="max-width: 100%; height: auto;"/><br/>
+      <div class="output-cards">
+        <div class="card">
+          <h3>File information:</h3>
+          <p>Filename : <a id="filename"></a></p>
+          <md-circular-progress id="progress-information" indeterminate style="display: none;"></md-circular-progress>
+          <img id="album-art" style="max-width: 25%; height: auto;"/>
+        </div>
+        <div class="card">
+          <h3>Spectrogram :</h3>
+          <div class="spectrogram-box">
+            <md-circular-progress id="progress-spectrogram" indeterminate style="display: none;"></md-circular-progress>
+            <img id="output-image" style="max-width: 100%; height: auto; margin: 6px;"/>
+            <div class="break"></div>
+            <md-filled-tonal-button id="download_btn" style="display: none;" onclick="downloadSpec()">
+              <svg slot="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 15.575q-.2 0-.375-.062T11.3 15.3l-3.6-3.6q-.3-.3-.288-.7t.288-.7q.3-.3.713-.312t.712.287L11 12.15V5q0-.425.288-.712T12 4q.425 0 .713.288T13 5v7.15l1.875-1.875q.3-.3.713-.288t.712.313q.275.3.288.7t-.288.7l-3.6 3.6q-.15.15-.325.213t-.375.062M6 20q-.825 0-1.412-.587T4 18v-2q0-.425.288-.712T5 15q.425 0 .713.288T6 16v2h12v-2q0-.425.288-.712T19 15q.425 0 .713.288T20 16v2q0 .825-.587 1.413T18 20z"></path></svg> Download
+            </md-filled-tonal-button>
+            <img id="output-image" style="max-width: 100%; height: auto;"/><br/>
+          </div>
+        </div>
       </div>
       <!--<input type="file" id="uploader">-->
       <p id="message"></p>
@@ -47,8 +57,10 @@
       
       const show_spectrogram = async ({ target: { files } }) => {
         const message = document.getElementById('message');
-        const progress_bar = document.getElementById('progress');
-          progress_bar.style.visibility = 'visible';
+        const progress_info = document.getElementById('progress-information');
+        const progress_spectrogram = document.getElementById('progress-spectrogram');
+        progress_info.style.diplay = 'inline-flex';
+        progress_spectrogram.style.display = 'inline-flex';
         if (ffmpeg === null) {
           ffmpeg = new FFmpeg();
           ffmpeg.on("log", ({ message }) => {
@@ -56,7 +68,7 @@
           })
           ffmpeg.on("progress", ({ progress, time }) => {
             message.innerHTML = `${progress * 100} %, time: ${time / 1000000} s`;
-            progress_bar.value = progress;
+            //progress_bar.value = progress;
           });
           await ffmpeg.load({
             coreURL: "/node_modules/@ffmpeg/core/dist/umd/ffmpeg-core.js",
@@ -75,10 +87,17 @@
         await ffmpeg.exec(['-i', name, '-an', '-vcodec', 'copy', 'cover.jpg']);
         console.timeEnd('exec');
         message.innerHTML = 'Album art fetched';
-        const album_art_data = await ffmpeg.readFile('cover.jpg');
+        try{
+          const album_art_data = await ffmpeg.readFile('cover.jpg');
 
-        const album_art_image = document.getElementById('album-art');
-        album_art_image.src = URL.createObjectURL(new Blob([album_art_data.buffer], { type: 'image/jpg' }));
+          progress_info.style.display = 'none';
+            
+          const album_art_image = document.getElementById('album-art');
+          album_art_image.src = URL.createObjectURL(new Blob([album_art_data.buffer], { type: 'image/jpg' }));
+        } catch(error){
+          console.error(error);
+          console.log('No album art, skipping ...');
+        }
           
         // Spectrogram
         message.innerHTML = 'Processing : start';
@@ -88,9 +107,11 @@
         message.innerHTML = 'Processing : complete !';
         const data = await ffmpeg.readFile('spectrogram.png');
 
+        progress_spectrogram.style.display = 'none';
+
         const image = document.getElementById('output-image');
         image.src = URL.createObjectURL(new Blob([data.buffer], { type: 'image/png' }));
-        document.getElementById('download_btn').style.visibility = 'visible';
+        document.getElementById('download_btn').style.display = 'inline-flex';
       }
 
       function importData() {

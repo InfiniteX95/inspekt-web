@@ -14,35 +14,63 @@ body{
     margin : 0;
 }
 
+
 header{
   background-color: var(--md-sys-color-surface-container);
   display: flex;
   align-items: center;
-  padding: 24px 32px;
+  padding: 1.5em 2em;
 }
 
 .card{
   background-color: var(--md-sys-color-surface-container);
   color: var(--md-sys-color-on-surface);
-  border-radius: 20px;
-  padding: 24px;
+  border-radius: 1.25em;
+  padding: 1.5em;
+  margin: 0.375em;
 }
 
-#home a, #home a:link, #home a:visited, #home a:hover, #home a:active{
+.output-cards{
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 30fr 70fr;
+}
+
+.spectrogram-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.break{
+  flex-basis: 100%;
+  margin: 0;
+}
+
+#home{
   padding: 0;
   color: var(--md-sys-color-primary);
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 18px;
+  font-size: 1.5em;
 }
 
 .content{
-  padding: 16px;
-  display: grid;
-  grid-template-columns: 25fr 75fr;
-  grid-gap: 12px;
+  padding: 1em;
 }
 
 md-circular-progress-color {
   --md-circular-progress-color: var(--md-sys-color-secondary-container);
+}
+
+@media screen and (orientation : portrait) {
+  body {
+    font-size: calc(1.3em + 1.3vmin);
+    --md-filled-tonal-button-label-text-size: calc(0.4em + 1vmin);
+    --md-filled-tonal-button-label-text-line-height: calc(0.4em + 1.2vmin);
+    --md-filled-tonal-button-icon-size: calc(0.5em + 1vmin);
+    --md-filled-tonal-button-container-height: calc(1.5em + 3vmin);
+  }
+  .output-cards{ display: block; }
+  .card{ overflow: hidden; margin-top: 24px; border-radius: 30px; }
 }
