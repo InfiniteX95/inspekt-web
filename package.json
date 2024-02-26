@@ -1,14 +1,13 @@
 {
   "name": "inspekt-web",
   "version": "1.0.0",
-  "description": "",
+  "description": "A web based audio file spectrogram viewer",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "material": "npx rollup -p @rollup/plugin-node-resolve material/material.js -o material/bundle.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Infinite",
+  "license": "GPLv3",
   "dependencies": {
     "@ffmpeg/core": "^0.12.6",
     "@ffmpeg/ffmpeg": "^0.12.10",
