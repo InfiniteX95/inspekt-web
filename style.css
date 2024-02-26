@@ -14,12 +14,25 @@ body{
     margin : 0;
 }
 
+p, h3{
+  margin-top: 0;
+}
 
 header{
   background-color: var(--md-sys-color-surface-container);
   display: flex;
   align-items: center;
   padding: 1.5em 2em;
+}
+
+#home{
+  padding: 0;
+  color: var(--md-sys-color-primary);
+  font-size: 1.5em;
+}
+
+.content{
+  padding: 1em;
 }
 
 .card{
@@ -49,26 +62,18 @@ header{
   margin: 0;
 }
 
-#home{
-  padding: 0;
-  color: var(--md-sys-color-primary);
-  font-size: 1.5em;
-}
-
-.content{
-  padding: 1em;
-}
-
 md-circular-progress-color {
   --md-circular-progress-color: var(--md-sys-color-secondary-container);
 }
 
 @media screen and (orientation : portrait) {
+  :root{
+    font-size: calc(1.3em + 1.3vw);
+  }
   body {
-    font-size: calc(1.3em + 1.3vmin);
     --md-filled-tonal-button-label-text-size: calc(0.4em + 1vmin);
     --md-filled-tonal-button-label-text-line-height: calc(0.4em + 1.2vmin);
-    --md-filled-tonal-button-icon-size: calc(0.5em + 1vmin);
+    --md-filled-tonal-button-icon-size: calc(0.8em + 1vmin);
     --md-filled-tonal-button-container-height: calc(1.5em + 3vmin);
   }
   .output-cards{ display: block; }
