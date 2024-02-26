@@ -64,7 +64,7 @@ const show_spectrogram = async ({ target: { files } }) => {
 
         // FFmpeg core loading
         await ffmpeg.load({
-            coreURL: "/node_modules/@ffmpeg/core/dist/umd/ffmpeg-core.js",
+            coreURL: "../../../core/dist/umd/ffmpeg-core.js",
         });
     }
 
