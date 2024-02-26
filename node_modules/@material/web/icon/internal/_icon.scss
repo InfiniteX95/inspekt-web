@@ -1,0 +1,69 @@
+//
+// Copyright 2022 Google LLC
+// SPDX-License-Identifier: Apache-2.0
+//
+
+// go/keep-sorted start
+@use 'sass:list';
+@use 'sass:map';
+// go/keep-sorted end
+// go/keep-sorted start
+@use '../../tokens';
+// go/keep-sorted end
+
+@mixin theme($tokens) {
+  $supported-tokens: tokens.$md-comp-icon-supported-tokens;
+
+  @each $token, $value in $tokens {
+    @if list.index($supported-tokens, $token) == null {
+      @error 'Token `#{$token}` is not a supported token.';
+    }
+
+    @if $value {
+      --md-icon-#{$token}: #{$value};
+    }
+  }
+}
+
+@mixin styles() {
+  $tokens: tokens.md-comp-icon-values();
+  @each $token, $value in $tokens {
+    $tokens: map.set($tokens, $token, var(--md-icon-#{$token}, #{$value}));
+  }
+
+  :host {
+    font-size: map.get($tokens, 'size');
+    width: map.get($tokens, 'size');
+    height: map.get($tokens, 'size');
+    color: inherit;
+    font-variation-settings: inherit;
+    font-weight: 400;
+    font-family: map.get($tokens, 'font');
+    display: inline-flex;
+    font-style: normal;
+    line-height: 1;
+    // Avoid displaying overflowing text if font ligatures have not loaded.
+    overflow: hidden;
+    letter-spacing: normal;
+    text-transform: none;
+    user-select: none;
+    white-space: nowrap;
+    word-wrap: normal;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::slotted(svg) {
+    fill: currentColor;
+  }
+
+  ::slotted(*) {
+    height: 100%;
+    width: 100%;
+  }
+}

@@ -1,0 +1,53 @@
+//
+// Copyright 2022 Google LLC
+// SPDX-License-Identifier: Apache-2.0
+//
+
+// go/keep-sorted start
+@use '../../../tokens';
+// go/keep-sorted end
+
+@mixin theme($tokens) {
+  $supported-tokens: list.join(
+    tokens.$md-comp-outlined-segmented-button-supported-tokens,
+    ('shape-start-start', 'shape-start-end', 'shape-end-end', 'shape-end-start')
+  );
+
+  @each $token, $value in $tokens {
+    @if list.index($supported-tokens, $token) == null {
+      @error 'Token `#{$token}` is not a supported token.';
+    }
+
+    @if $value {
+      --md-outlined-segmented-button-#{$token}: #{$value};
+    }
+  }
+}
+
+@mixin styles() {
+  $tokens: tokens.md-comp-outlined-segmented-button-values();
+
+  :host {
+    @each $token, $value in $tokens {
+      --_#{$token}: var(--md-outlined-segmented-button-#{$token}, #{$value});
+    }
+
+    // Support logical shape properties
+    --_shape-start-start: var(
+      --md-outlined-segmented-button-shape-start-start,
+      var(--_shape)
+    );
+    --_shape-start-end: var(
+      --md-outlined-segmented-button-shape-start-end,
+      var(--_shape)
+    );
+    --_shape-end-end: var(
+      --md-outlined-segmented-button-shape-end-end,
+      var(--_shape)
+    );
+    --_shape-end-start: var(
+      --md-outlined-segmented-button-shape-end-start,
+      var(--_shape)
+    );
+  }
+}
