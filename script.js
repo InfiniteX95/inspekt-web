@@ -19,18 +19,32 @@ const show_spectrogram = async ({ target: { files } }) => {
     const spectrogram_button = document.getElementById('download_btn');
     const album_art_image = document.getElementById('album-art');
 
+    // Fields
+    const filename_field = document.getElementById('filename-field');
+    const title_field = document.getElementById('title-field');
+    const artist_field = document.getElementById('artist-field');
+    const album_field = document.getElementById('album-field');
+
     // Hide content before processing the new file
     spectrogram_image.style.display = 'none';
     spectrogram_button.style.display = 'none';
+    album_art_image.style.display = 'none';
 
     // Flush data before processing the new file
     title = '';
     artist = '';
     album = '';
+    title_field.innerHTML = title;
+    artist_field.innerHTML = artist;
+    album_field.innerHTML = album;
 
     // Show progress indicators
-    progress_info.style.diplay = 'inline-flex';
+    progress_info.style.display = 'inline-flex';
     progress_spectrogram.style.display = 'inline-flex';
+
+    // Update filename
+    filename = files[0].name;
+    filename_field.innerHTML = filename;
 
     // FFmpeg instantiation and initialization
     if (ffmpeg === null) {
@@ -71,10 +85,6 @@ const show_spectrogram = async ({ target: { files } }) => {
     const { name } = files[0];
     await ffmpeg.writeFile(name, await fetchFile(files[0]));
 
-    // Update filename
-    filename = files[0].name;
-    document.getElementById('filename-field').innerHTML = filename;
-
     // Getting album art and informations
     console.time('exec');
     await ffmpeg.exec(['-i', name, '-an', '-vcodec', 'copy', 'cover.jpg']);
@@ -84,18 +94,20 @@ const show_spectrogram = async ({ target: { files } }) => {
     try{
         const album_art_data = await ffmpeg.readFile('cover.jpg');
 
-        progress_info.style.display = 'none';
-
         album_art_image.src = URL.createObjectURL(new Blob([album_art_data.buffer], { type: 'image/jpg' }));
+
+        progress_info.style.display = 'none';
+        album_art_image.style.display = 'inline-flex';
+
     } catch(error){
         console.error(error);
         console.log('No album art, skipping ...');
     }
 
     // Update title, artist name and album name
-    document.getElementById('title-field').innerHTML = title;
-    document.getElementById('artist-field').innerHTML = artist;
-    document.getElementById('album-field').innerHTML = album;
+    title_field.innerHTML = title;
+    artist_field.innerHTML = artist;
+    album_field.innerHTML = album;
 
     // Getting spectrogram
     console.time('exec');
@@ -115,20 +127,78 @@ const show_spectrogram = async ({ target: { files } }) => {
     document.getElementById('download_btn').style.display = 'inline-flex';
 }
 
-function uploadButton() {
+function uploadButton(){
+    // Create an invisible file input element with audio and video filetype filter
     let input = document.createElement('input');
     input.type = 'file';
-    let files = Array.from(input.files);
+    input.accept = 'audio/*,video/*';
+    // Add a change event listener to the element and simulate change with a click
     input.addEventListener('change', show_spectrogram);
     input.click();
+    // Remove the useless element
     input.remove();
 }
 
-function downloadSpectrumButton(){
+function dropHandler(ev){
+    console.log("File(s) dropped");
+
+    // Prevent the file from being opened
+    ev.preventDefault();
+
+    // Check if the dropped item is a file
+    if(ev.dataTransfer.items){
+        if(ev.dataTransfer.items[0].kind === "file"){
+            let files = ev.dataTransfer.files;
+
+            // Filetype filter
+            if(files[0].type.match('audio/*') || files[0].type.match('video/*')){
+                // Create an invisible file input element and set its files to dropped ones
+                let input = document.createElement('input');
+                input.type = 'file';
+                input.files = files;
+                // Add and trigger a change event
+                input.addEventListener('change', show_spectrogram);
+                input.dispatchEvent(new Event('change'));
+                // Remove the useless element
+                input.remove();
+            }
+        }
+    }
+}
+
+function downloadSpectrogramButton(){
+    // Get the image container
     var image = document.getElementById('output-image');
+    // Create an invisible anchor element with download prop
     var save_img = document.createElement('a');
     save_img.href = image.src;
     save_img.download = filename.substring(0, filename.lastIndexOf('.')) + '.png';
+    // Simulate click to initiate download
     save_img.click();
+    // Remove the useless element
     save_img.remove();
 }
+
+// Add events for drop page opacity
+document.addEventListener('DOMContentLoaded', function () {
+    // Get the element
+    const dshadow = document.getElementById('drop-shadow');
+
+    document.body.addEventListener('dragover', function (ev) {
+        ev.preventDefault();
+        dshadow.style.background = 'rgba(0, 0, 0, 0.5)';
+    });
+
+    document.body.addEventListener('dragenter', function () {
+        dshadow.style.background = 'rgba(0, 0, 0, 0.5)';
+    });
+
+    document.body.addEventListener('dragleave', function () {
+        dshadow.style.background = 'rgba(0, 0, 0, 0)';
+    });
+
+    document.body.addEventListener('drop', function (ev) {
+        dshadow.style.background = 'rgba(0, 0, 0, 0)';
+        dropHandler(ev);
+    });
+});
