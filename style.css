@@ -12,6 +12,21 @@ body{
     font-variation-settings:
     "wdth" 100;
     margin : 0;
+    min-height: 100vh;
+}
+
+#drop-shadow{
+  min-height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: none;
+  z-index: 5;
+  pointer-events: none;
+
+  transition: background-color 0.5s;
 }
 
 p, h3{
