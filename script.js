@@ -85,10 +85,19 @@ const show_spectrogram = async ({ target: { files } }) => {
     const { name } = files[0];
     await ffmpeg.writeFile(name, await fetchFile(files[0]));
 
+    // Delete old album art
+    try{
+        await ffmpeg.deleteFile('cover.jpg');
+    } catch(error) {
+        console.log('cover.jpg does not exist');
+    }
+
     // Getting album art and informations
     console.time('exec');
-    await ffmpeg.exec(['-i', name, '-an', '-vcodec', 'copy', 'cover.jpg']);
+    await ffmpeg.exec(['-i', name, '-an', '-vcodec', 'copy', '-frames:v', '1' , '-update', '1', 'cover.jpg']);
     console.timeEnd('exec');
+
+    progress_info.style.display = 'none';
 
     // Update cover info if available
     try{
@@ -96,10 +105,8 @@ const show_spectrogram = async ({ target: { files } }) => {
 
         album_art_image.src = URL.createObjectURL(new Blob([album_art_data.buffer], { type: 'image/jpg' }));
 
-        progress_info.style.display = 'none';
         album_art_image.style.display = 'inline-flex';
-
-    } catch(error){
+    } catch(error) {
         console.error(error);
         console.log('No album art, skipping ...');
     }
