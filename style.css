@@ -83,13 +83,13 @@ md-circular-progress-color {
 
 @media screen and (orientation : portrait) {
   :root{
-    font-size: calc(1.3em + 1.3vw);
+    font-size: calc(0.7em + 1vw);
   }
   body {
-    --md-filled-tonal-button-label-text-size: calc(0.4em + 1vmin);
-    --md-filled-tonal-button-label-text-line-height: calc(0.4em + 1.2vmin);
-    --md-filled-tonal-button-icon-size: calc(0.8em + 1vmin);
-    --md-filled-tonal-button-container-height: calc(1.5em + 3vmin);
+    --md-filled-tonal-button-label-text-size: 1em;
+    --md-filled-tonal-button-label-text-line-height: 1em;
+    --md-filled-tonal-button-icon-size: 1.2em;
+    --md-filled-tonal-button-container-height: 2.5em;
   }
   .output-cards{ display: block; }
   .card{ overflow: hidden; margin-top: 24px; border-radius: 30px; }
