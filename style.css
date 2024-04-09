@@ -39,12 +39,19 @@ header{
   display: flex;
   align-items: center;
   padding: 1.5em 2em;
+  overflow: hidden;
 }
 
 #header-content{
   width: 100%;
   display: flex;
   align-items: center;
+}
+
+#header-content img{
+  height: 30px;
+  vertical-align: middle;
+  margin-right: 1em;
 }
 
 #header-right{
