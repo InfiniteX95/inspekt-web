@@ -186,6 +186,17 @@ function downloadSpectrogramButton(){
     save_img.remove();
 }
 
+function setDialogState(bool){
+    // Get the dialog
+    var dialog = document.getElementById('info-dialog');
+    // Show or hide according to bool value
+    if(bool){
+        dialog.show();
+    } else {
+        dialog.close();
+    }
+}
+
 // Add events for drop page opacity
 document.addEventListener('DOMContentLoaded', function () {
     // Get the element

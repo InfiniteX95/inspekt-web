@@ -13,11 +13,19 @@
     <script src="./node_modules/@ffmpeg/ffmpeg/dist/umd/ffmpeg.js"></script>
     <script src="./node_modules/@ffmpeg/util/dist/umd/index.js"></script>
     <script src="./material/bundle.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet">
   </head>
   <body>
     <div id="drop-shadow"></div>
     <header>
-      <a id="home">Inspekt Web</a>
+      <div id="header-content">
+        <a id="home">Inspekt Web</a>
+        <div id="header-right">
+          <md-icon-button onclick="setDialogState(true)">
+            <md-icon>info</md-icon>
+          </md-icon-button>
+        </div>
+      </div>
     </header>
     <div class="content">
       <div class="card">
@@ -49,6 +57,22 @@
         </div>
       </div>
     </div>
+    <md-dialog aria-label="Informations" id="info-dialog">
+      <div slot="headline">Information</div>
+      <div slot="content">
+        <p>Inspekt-Web</p>
+        <p>Version : 1.1.0</p>
+        <p>Credit : ffmpeg-wasm, material-web</p>
+        <p>License : GPLv3</p>
+        <p>© 2024 Infinite</p>
+      </div>
+      <div slot="actions">
+        <md-outlined-button href="https://github.com/InfiniteX95/inspekt-web" target="_blank">View Code
+          <svg slot="icon" viewBox="0 0 24 24"><path fill="currentColor" d="m8.825 12l1.475-1.475q.3-.3.3-.7t-.3-.7t-.712-.3t-.713.3L6.7 11.3q-.15.15-.213.325T6.425 12t.062.375t.213.325l2.175 2.175q.3.3.713.3t.712-.3t.3-.7t-.3-.7zm6.35 0L13.7 13.475q-.3.3-.3.7t.3.7t.713.3t.712-.3L17.3 12.7q.15-.15.213-.325t.062-.375t-.062-.375t-.213-.325l-2.175-2.175q-.15-.15-.337-.225t-.376-.075t-.375.075t-.337.225q-.3.3-.3.7t.3.7zM5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21zm0-2h14V5H5zM5 5v14z"></path></svg>
+        </md-outlined-button>
+        <md-filled-tonal-button onclick="setDialogState(false)">OK</md-filled-tonal-button>
+      </div>
+    </md-dialog>
     <script src="./script.js"></script>
   </body>
 </html>

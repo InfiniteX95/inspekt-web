@@ -13,6 +13,7 @@ body{
     "wdth" 100;
     margin : 0;
     min-height: 100vh;
+    --md-icon-font: 'Material Symbols Rounded';
 }
 
 #drop-shadow{
@@ -38,6 +39,17 @@ header{
   display: flex;
   align-items: center;
   padding: 1.5em 2em;
+}
+
+#header-content{
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#header-right{
+  margin-left: auto;
+  order: 2;
 }
 
 #home{
