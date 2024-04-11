@@ -38,6 +38,9 @@ const show_spectrogram = async ({ target: { files } }) => {
     artist_field.innerHTML = artist;
     album_field.innerHTML = album;
 
+    // Show output cards
+    document.getElementById('output').style.display = '';
+
     // Show progress indicators
     progress_info.style.display = 'inline-flex';
     progress_spectrogram.style.display = 'inline-flex';
@@ -184,6 +187,17 @@ function downloadSpectrogramButton(){
     save_img.click();
     // Remove the useless element
     save_img.remove();
+}
+
+function setDialogState(bool){
+    // Get the dialog
+    var dialog = document.getElementById('info-dialog');
+    // Show or hide according to bool value
+    if(bool){
+        dialog.show();
+    } else {
+        dialog.close();
+    }
 }
 
 // Add events for drop page opacity

@@ -10,23 +10,33 @@
     <meta property="og:url" content="https://infinitex95.github.io/inspekt-web/"/>
     <link rel="stylesheet" href="style.css">
     <title>Inspekt-Web</title>
+    <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
     <script src="./node_modules/@ffmpeg/ffmpeg/dist/umd/ffmpeg.js"></script>
     <script src="./node_modules/@ffmpeg/util/dist/umd/index.js"></script>
     <script src="./material/bundle.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet">
   </head>
   <body>
     <div id="drop-shadow"></div>
     <header>
-      <a id="home">Inspekt Web</a>
+      <div id="header-content">
+        <img src="./img/inspekt-logo-white.png"/>
+        <a id="home">Inspekt Web</a>
+        <div id="header-right">
+          <md-icon-button onclick="setDialogState(true)">
+            <md-icon>info</md-icon>
+          </md-icon-button>
+        </div>
+      </div>
     </header>
     <div class="content">
       <div class="card">
-        <p>Upload an audio file to view information :</p>
+        <p>Select an audio file to view its spectrogram :</p>
         <md-filled-tonal-button id="upload-button" onclick="uploadButton()">
           <svg slot="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M3 21q-.825 0-1.412-.587T1 19V6h2v13h17v2zm4-4q-.825 0-1.412-.587T5 15V4q0-.825.588-1.412T7 2h5l2 2h7q.825 0 1.413.588T23 6v9q0 .825-.587 1.413T21 17z"></path></svg> Browser
         </md-filled-tonal-button>
       </div>
-      <div class="output-cards">
+      <div class="output-cards" id="output" style="display: none;">
         <div class="card">
           <h3>File information :</h3>
           <p>Filename : <span id="filename-field"></span></p>
@@ -40,7 +50,7 @@
           <h3>Spectrogram :</h3>
           <div class="spectrogram-box">
             <md-circular-progress id="progress-spectrogram" indeterminate style="display: none;"></md-circular-progress>
-            <img id="output-image" style="max-width: 100%; height: auto; display: none; margin-bottom: 0.375em"/>
+            <img id="output-image" style="max-width: 100%; height: auto; display: none;"/>
             <div class="break"></div>
             <md-filled-tonal-button id="download_btn" style="display: none;" onclick="downloadSpectrogramButton()">
               <svg slot="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 15.575q-.2 0-.375-.062T11.3 15.3l-3.6-3.6q-.3-.3-.288-.7t.288-.7q.3-.3.713-.312t.712.287L11 12.15V5q0-.425.288-.712T12 4q.425 0 .713.288T13 5v7.15l1.875-1.875q.3-.3.713-.288t.712.313q.275.3.288.7t-.288.7l-3.6 3.6q-.15.15-.325.213t-.375.062M6 20q-.825 0-1.412-.587T4 18v-2q0-.425.288-.712T5 15q.425 0 .713.288T6 16v2h12v-2q0-.425.288-.712T19 15q.425 0 .713.288T20 16v2q0 .825-.587 1.413T18 20z"></path></svg> Download
@@ -49,6 +59,22 @@
         </div>
       </div>
     </div>
+    <md-dialog aria-label="Informations" id="info-dialog">
+      <div slot="headline">Information</div>
+      <div slot="content">
+        <p>Inspekt-Web</p>
+        <p>Version : 1.1.0</p>
+        <p>Credit : ffmpeg-wasm, material-web</p>
+        <p>License : GPLv3</p>
+        <p>© 2024 Infinite</p>
+      </div>
+      <div slot="actions">
+        <md-outlined-button href="https://github.com/InfiniteX95/inspekt-web" target="_blank">View Code
+          <svg slot="icon" viewBox="0 0 24 24"><path fill="currentColor" d="m8.825 12l1.475-1.475q.3-.3.3-.7t-.3-.7t-.712-.3t-.713.3L6.7 11.3q-.15.15-.213.325T6.425 12t.062.375t.213.325l2.175 2.175q.3.3.713.3t.712-.3t.3-.7t-.3-.7zm6.35 0L13.7 13.475q-.3.3-.3.7t.3.7t.713.3t.712-.3L17.3 12.7q.15-.15.213-.325t.062-.375t-.062-.375t-.213-.325l-2.175-2.175q-.15-.15-.337-.225t-.376-.075t-.375.075t-.337.225q-.3.3-.3.7t.3.7zM5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21zm0-2h14V5H5zM5 5v14z"></path></svg>
+        </md-outlined-button>
+        <md-filled-tonal-button onclick="setDialogState(false)">OK</md-filled-tonal-button>
+      </div>
+    </md-dialog>
     <script src="./script.js"></script>
   </body>
 </html>

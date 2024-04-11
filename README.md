@@ -1,4 +1,5 @@
-# [Inspekt-Web](https://infinitex95.github.io/inspekt-web/)
+# <picture><source media="(prefers-color-scheme: dark)" srcset="/img/inspekt-logo-white.png"><source media="(prefers-color-scheme: light)" srcset="/img/inspekt-logo.png"><img alt="Inspekt-Web logo" width="30"></picture> [Inspekt-Web](https://infinitex95.github.io/inspekt-web/)
+
 Inspekt-Web is an audio file spectrum viewer powered by [ffmpeg-wasm](https://github.com/ffmpegwasm/ffmpeg.wasm).
 
 [Material Web](https://github.com/material-components/material-web/tree/main) toolkit is used for styling.

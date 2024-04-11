@@ -13,6 +13,7 @@ body{
     "wdth" 100;
     margin : 0;
     min-height: 100vh;
+    --md-icon-font: 'Material Symbols Rounded';
 }
 
 #drop-shadow{
@@ -38,6 +39,24 @@ header{
   display: flex;
   align-items: center;
   padding: 1.5em 2em;
+  overflow: hidden;
+}
+
+#header-content{
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#header-content img{
+  height: 30px;
+  vertical-align: middle;
+  margin-right: 1em;
+}
+
+#header-right{
+  margin-left: auto;
+  order: 2;
 }
 
 #home{
@@ -47,7 +66,9 @@ header{
 }
 
 .content{
-  padding: 1em;
+  padding: 1.5em;
+  display: grid;
+  grid-gap: 1em;
 }
 
 .card{
@@ -55,13 +76,13 @@ header{
   color: var(--md-sys-color-on-surface);
   border-radius: 1.25em;
   padding: 1.5em;
-  margin: 0.375em;
 }
 
 .output-cards{
   padding: 0;
   margin: 0;
   display: grid;
+  grid-gap: 1em;
   grid-template-columns: 30fr 70fr;
 }
 
@@ -70,6 +91,10 @@ header{
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.spectrogram-box img{
+  margin-bottom: 1em;
 }
 
 .break{
@@ -91,6 +116,7 @@ md-circular-progress-color {
     --md-filled-tonal-button-icon-size: 1.2em;
     --md-filled-tonal-button-container-height: 2.5em;
   }
-  .output-cards{ display: block; }
-  .card{ overflow: hidden; margin-top: 24px; border-radius: 30px; }
+  .content{ display: grid; grid-gap: 1em; }
+  .output-cards{ grid-gap: 1em; display: grid; grid-template-columns: inherit; }
+  .card{ overflow: hidden; }
 }

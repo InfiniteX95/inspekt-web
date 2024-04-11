@@ -1,6 +1,6 @@
 {
   "name": "inspekt-web",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A web based audio file spectrogram viewer",
   "scripts": {
     "start": "node index.js",
